@@ -2,6 +2,11 @@
 crds:
   keep: false
 
+controller:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+
 redis-ha:
   enabled: true
   exporter:

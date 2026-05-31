@@ -1,0 +1,45 @@
+{{- if .Values.controller.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "argo-cd.controller.fullname" . }}
+  namespace: {{ include  "argo-cd.namespace" . }}
+  labels:
+    {{- include "argo-cd.labels" (dict "context" . "component" .Values.controller.name "name" .Values.controller.name) | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    {{- if .Values.controller.dynamicClusterDistribution }}
+    kind: Deployment
+    {{- else }}
+    kind: StatefulSet
+    {{- end }}
+    name: {{ include "argo-cd.controller.fullname" . }}
+  minReplicas: {{ .Values.controller.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.controller.autoscaling.maxReplicas }}
+  metrics:
+  {{- with .Values.controller.autoscaling.metrics }}
+    {{- toYaml . | nindent 4 }}
+  {{- else }}
+    {{- with .Values.controller.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ . }}
+    {{- end }}
+    {{- with .Values.controller.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ . }}
+    {{- end }}
+  {{- end }}
+  {{- with .Values.controller.autoscaling.behavior }}
+  behavior:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

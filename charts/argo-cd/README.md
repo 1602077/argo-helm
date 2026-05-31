@@ -977,6 +977,13 @@ NAME: my-release
 |-----|------|---------|-------------|
 | controller.affinity | object | `{}` (defaults to global.affinity preset) | Assign custom [affinity] rules to the deployment |
 | controller.automountServiceAccountToken | bool | `true` | Automount API credentials for the Service Account into the pod. |
+| controller.autoscaling.behavior | object | `{}` | Configures the scaling behavior of the target in both Up and Down directions. |
+| controller.autoscaling.enabled | bool | `false` | Enable Horizontal Pod Autoscaler ([HPA]) for the Application controller |
+| controller.autoscaling.maxReplicas | int | `5` | Maximum number of replicas for the Application controller [HPA] |
+| controller.autoscaling.metrics | list | `[]` | Configures custom HPA metrics for the Application controller Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/ |
+| controller.autoscaling.minReplicas | int | `1` | Minimum number of replicas for the Application controller [HPA] |
+| controller.autoscaling.targetCPUUtilizationPercentage | int | `50` | Average CPU utilization percentage for the Application controller [HPA] |
+| controller.autoscaling.targetMemoryUtilizationPercentage | int | `50` | Average memory utilization percentage for the Application controller [HPA] |
 | controller.clusterRoleRules.enabled | bool | `false` | Enable custom rules for the application controller's ClusterRole resource |
 | controller.clusterRoleRules.rules | list | `[]` | List of custom rules for the application controller's ClusterRole resource |
 | controller.containerPorts.metrics | int | `8082` | Metrics container port |

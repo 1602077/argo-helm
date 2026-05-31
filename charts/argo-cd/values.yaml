@@ -803,6 +803,37 @@ controller:
     ## Has higher precedence over `controller.pdb.minAvailable`
     maxUnavailable: ""
 
+  ## Application controller Horizontal Pod Autoscaler
+  autoscaling:
+    # -- Enable Horizontal Pod Autoscaler ([HPA]) for the Application controller
+    enabled: false
+    # -- Minimum number of replicas for the Application controller [HPA]
+    minReplicas: 1
+    # -- Maximum number of replicas for the Application controller [HPA]
+    maxReplicas: 5
+    # -- Average CPU utilization percentage for the Application controller [HPA]
+    targetCPUUtilizationPercentage: 50
+    # -- Average memory utilization percentage for the Application controller [HPA]
+    targetMemoryUtilizationPercentage: 50
+    # -- Configures the scaling behavior of the target in both Up and Down directions.
+    behavior: {}
+      # scaleDown:
+      #  stabilizationWindowSeconds: 300
+      #  policies:
+      #   - type: Pods
+      #     value: 1
+      #     periodSeconds: 180
+      # scaleUp:
+      #   stabilizationWindowSeconds: 300
+      #   policies:
+      #   - type: Pods
+      #     value: 2
+      #     periodSeconds: 60
+    # -- Configures custom HPA metrics for the Application controller
+    # Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+    metrics: []
+
+
   ## Application controller Vertical Pod Autoscaler
   ## Ref: https://kubernetes.io/docs/concepts/workloads/autoscaling/#scaling-workloads-vertically/
   vpa:
